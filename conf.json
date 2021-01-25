@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "dbc":
+  [
+    {
+      "name": "mysql",
+      "config": {
+        "user": "",
+        "password": "",
+        "host": "127.0.0.1",
+        "database": "filmtube"
+      }
+    }
+  ],
+  "storage": {
+    "root": "/home/zmh/nginx/installed"
+  }
+}

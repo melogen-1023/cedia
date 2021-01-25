@@ -1,14 +1,24 @@
-# def print_hi(name):
-#     print(f'Hi, {name}')
-
-import core.source as source
-import sources.bilibili.bilibili as bili_source
-import requests
-import core.url as url
+import core.run.task as task
+import json
+from core.register.register import cedia_register
+from db.mysql.dba import cedia_dba
+from core.conf.config import config
 
 if __name__ == '__main__':
-    session = requests.Session()
-    url = url.Url(search_url='https://api.bilibili.com/x/web-interface/search/type')
-    bilibili = bili_source.BiLiBiLi(name='bilibili', session=session, url=url)
-    bilibili.search('星际穿越')
-    bilibili.video()
+
+    with open('conf.json', 'r', encoding='UTF-8') as f:
+        conf = json.load(f)
+        dbc = conf['dbc']
+        cedia_dba.connect(dbc[0]['config'])
+        config.load(storage=conf['storage'])
+    with open('tasks.json', encoding='UTF-8') as f:
+        tasks = json.load(f)
+        data = tasks['data']
+        for i in range(len(data)):
+            t = task.Task(name=f'cedio#{i}', keyword=data[i]['name'])
+            arr = []
+            for source_s in data[i]['sources']:
+                arr.append(source_s)
+            t.set_sources(arr)  # set sources
+            cedia_register.append_task(t)  # add task
+        cedia_register.execute()
