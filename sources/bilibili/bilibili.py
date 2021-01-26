@@ -180,7 +180,7 @@ class BiLiBiLi(source.Source):
     def ffmpeg_merge(self):
         task_logger.info(f"正在合并音视频")
         completed_progress = subprocess.run(
-            ["ffmpeg", "-loglevel", "quiet", "-i", f"{self.effective_path}/{self.media_info['id']}/sample.mp4", '-i',
+            ["ffmpeg", "-loglevel", "quiet", "-i", f"{self.effective_path}/{self.media_info['id']}/sample.m4s", '-i',
              f"{self.effective_path}/{self.media_info['id']}/sample.mp3",
              f"{self.effective_path}/{self.media_info['id']}/src.mp4"])
         if completed_progress.returncode == 0:
