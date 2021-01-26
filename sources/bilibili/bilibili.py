@@ -32,6 +32,8 @@ class BiLiBiLi(source.Source):
         self.cover_image_suffix = ".jpg"
         self.name = 'bilibili'
         self.effective_path = f"{self.effective_path}/video"
+        self.sample_video_name = 'sample.m4s'  # 下载的视频样品文件名
+        self.sample_audio_name = 'sample.mp3'  # 下载的音频样品文件名
 
     def download(self, keyword):
         if self.search(keyword) != 0:
@@ -137,7 +139,7 @@ class BiLiBiLi(source.Source):
             return -1
 
     def video_download(self):
-        with open(f"{self.effective_path}/{self.media_info['id']}/sample.m4s", 'ab') as f:
+        with open(f"{self.effective_path}/{self.media_info['id']}/{self.sample_video_name}", 'ab') as f:
             task_logger.info(f"下载视频中...")
             with requests.request('get', self.video_base_url, headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36',
@@ -157,7 +159,7 @@ class BiLiBiLi(source.Source):
         return 0
 
     def audio_download(self):
-        with open(f"{self.effective_path}/{self.media_info['id']}/sample.mp3", 'ab') as f:
+        with open(f"{self.effective_path}/{self.media_info['id']}/{self.sample_audio_name}", 'ab') as f:
             task_logger.info(f"下载音频中...")
             with requests.request('get', self.audio_base_url, headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36',
@@ -180,14 +182,15 @@ class BiLiBiLi(source.Source):
     def ffmpeg_merge(self):
         task_logger.info(f"正在合并音视频")
         completed_progress = subprocess.run(
-            ["ffmpeg", "-loglevel", "quiet", "-i", f"{self.effective_path}/{self.media_info['id']}/sample.m4s", '-i',
-             f"{self.effective_path}/{self.media_info['id']}/sample.mp3",
+            ["ffmpeg", "-loglevel", "quiet", "-i",
+             f"{self.effective_path}/{self.media_info['id']}/{self.sample_video_name}", '-i',
+             f"{self.effective_path}/{self.media_info['id']}/{self.sample_audio_name}",
              f"{self.effective_path}/{self.media_info['id']}/src.mp4"])
         if completed_progress.returncode == 0:
             task_logger.info(f"合并完成")
         else:
             task_logger.warning(f"合并失败")
 
-        os.remove(f"{self.effective_path}/{self.media_info['id']}/sample.mp4")
-        os.remove(f"{self.effective_path}/{self.media_info['id']}/sample.mp3")
+        os.remove(f"{self.effective_path}/{self.media_info['id']}/{self.sample_video_name}")
+        os.remove(f"{self.effective_path}/{self.media_info['id']}/{self.sample_audio_name}")
         return completed_progress.returncode
