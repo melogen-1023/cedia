@@ -137,7 +137,7 @@ class BiLiBiLi(source.Source):
             return -1
 
     def video_download(self):
-        with open(f"{self.effective_path}/{self.media_info['id']}/sample.mp4", 'ab') as f:
+        with open(f"{self.effective_path}/{self.media_info['id']}/sample.m4s", 'ab') as f:
             task_logger.info(f"下载视频中...")
             with requests.request('get', self.video_base_url, headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36',
