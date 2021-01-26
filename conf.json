@@ -7,7 +7,7 @@
       "config": {
         "user": "",
         "password": "",
-        "host": "127.0.0.1",
+        "host": "127.40.0.1",
         "database": "filmtube"
       }
     }

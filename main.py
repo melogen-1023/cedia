@@ -4,6 +4,9 @@ from core.register.register import cedia_register
 from db.mysql.dba import cedia_dba
 from core.conf.config import config
 
+# python 3.8
+
+
 if __name__ == '__main__':
 
     with open('conf.json', 'r', encoding='UTF-8') as f:

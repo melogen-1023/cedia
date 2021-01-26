@@ -10,7 +10,6 @@ from db.mysql.dba import cedia_dba
 from util.snowflake.generator import media_id_generator
 from util.log import task_logger
 from bs4 import BeautifulSoup
-from core.conf.config import config
 
 
 class BiLiBiLi(source.Source):
@@ -32,14 +31,15 @@ class BiLiBiLi(source.Source):
         self.media_info = {}
         self.cover_image_suffix = ".jpg"
         self.name = 'bilibili'
+        self.effective_path = f"{self.effective_path}/video"
 
     def download(self, keyword):
         if self.search(keyword) != 0:
-            return -1
+            task_logger.info(f"搜索任务失败")
         if self.cover() != 0:
-            return -1
+            task_logger.info(f"封面获取任务失败")
         if self.video() != 0:
-            return -1
+            task_logger.info(f"音视频处理任务失败")
 
         return 0
 
@@ -57,7 +57,7 @@ class BiLiBiLi(source.Source):
 
         if not os.path.exists(f"{self.effective_path}/{self.media_info['id']}"):
             task_logger.info(f"创建{self.media_info['id']}目录")
-            os.makedirs(f"{self.path}/{self.media_info['id']}",exist_ok=True)
+            os.makedirs(f"{self.effective_path}/{self.media_info['id']}", exist_ok=True)
 
         return 0
 
@@ -187,4 +187,7 @@ class BiLiBiLi(source.Source):
             task_logger.info(f"合并完成")
         else:
             task_logger.warning(f"合并失败")
+
+        os.remove(f"{self.effective_path}/{self.media_info['id']}/sample.mp4")
+        os.remove(f"{self.effective_path}/{self.media_info['id']}/sample.mp3")
         return completed_progress.returncode
