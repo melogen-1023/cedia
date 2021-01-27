@@ -5,8 +5,8 @@
     {
       "name": "mysql",
       "config": {
-        "user": "root",
-        "password": "1023",
+        "user": "",
+        "password": "",
         "host": "192.168.1.185",
         "database": "filmtube"
       }
