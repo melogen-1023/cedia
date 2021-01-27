@@ -1,8 +1,0 @@
-/venv/
-/.idea/
-/media/
-test.py
-main.py
-conf.json
-.gitignore
-__pycache__
