@@ -22,7 +22,8 @@ class Task(threading.Thread):
     def run(self):
         self.init_sources()
         for source in self.sources:
-            task_logger.info(f"using {source.name} source")
+            task_logger.info(f"正在使用 {source.name}源")
             if not source.download(keyword=self.keyword):
-                task_logger.info(f"download media from {source.name} source")
+                task_logger.info(f"已从{source.name}源下载到资源")
                 break
+

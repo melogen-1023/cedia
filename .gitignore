@@ -1,8 +1,6 @@
 /venv/
 /.idea/
 /media/
-test.py
-main.py
 conf.json
-.gitignore
+tasks.json
 __pycache__

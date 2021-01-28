@@ -22,7 +22,7 @@ class Register:
 
     def execute(self):
         for task in self.container:
-            task_logger.info(f"{task.name} is running, keyword is {task.keyword}")
+            task_logger.info(f"{task.name}正在运行，关键字是{task.keyword}")
             task.start()
 
 
