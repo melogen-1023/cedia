@@ -3,4 +3,4 @@
 /media/
 conf.json
 tasks.json
-__pycache__
+*.pyc
