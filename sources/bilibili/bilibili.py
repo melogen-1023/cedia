@@ -40,9 +40,9 @@ class BiLiBiLi(source.Source):
         if self.search(keyword) != 0:
             task_logger.info(f"搜索任务失败")
             return -1
-        # if self.cover() != 0:
-        #     task_logger.info(f"封面获取任务失败")
-        #     return -1
+        if self.cover() != 0:
+            task_logger.info(f"封面获取任务失败")
+            return -1
         if self.video() != 0:
             task_logger.info(f"音视频处理任务失败")
             return -1
