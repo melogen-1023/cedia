@@ -4,9 +4,9 @@ import requests
 import subprocess
 import re
 import datetime
-import sources.const as const
+import sources.bilibili.const as const
 import os
-from db.mysql.dba import cedia_dba
+from db.mysql.dba import CediaDBA
 from util.snowflake.generator import media_id_generator
 from util.log import task_logger
 from bs4 import BeautifulSoup
@@ -20,7 +20,7 @@ class BiLiBiLi(source.Source):
             'accept-encoding': 'gzip,deflate,br',
             'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
             'cache - control': 'no-cache',
-            'Cookie': "_uuid=3B872007-3CB9-1CC5-9A09-D3ED28E0639553737infoc; buvid3=331EC5D1-40B8-4B16-9A07-BDC4AD2D5C3518535infoc; sid=isc27ocb; fingerprint=d03134c24a729aac98b5cdd5e174a40d; CURRENT_FNVAL=80; blackside_state=1; rpdid=|(u))|R|JkYm0J'uYu|)Rl~kY; LIVE_BUVID=AUTO2116111019078638; bp_t_offset_353064211=484075507557941916; fingerprint3=53fb32d6ff87b1f37b58afefdb6be059; fingerprint_s=fab07090719640bcc8d2249e43d520fa; buvid_fp=331EC5D1-40B8-4B16-9A07-BDC4AD2D5C3518535infoc; bp_video_offset_353064211=484538874402164234; finger=1571944565; PVID=1; buvid_fp_plain=6921B0F7-9C0F-4EAA-9011-79163CCF3CFC155822infoc; DedeUserID=353064211; DedeUserID__ckMd5=bfefe483490ae151; SESSDATA=aaac2e56%2C1627312967%2C8ef63*11; bili_jct=8e15cc9b87a6ff98be41b565c9f2e749",
+            'Cookie': "",
             'user-agent': 'Mozilla / 5.0(WindowsNT10.0;Win64;x64) AppleWebKit / 537.36(KHTML, likeGecko) Chrome / 87.0.4280.141Safari / 537.36',
             'origin': 'https://www.bilibili.com'
         }
@@ -35,6 +35,7 @@ class BiLiBiLi(source.Source):
         self.effective_path = f"{self.effective_path}/video"
         self.sample_video_name = 'sample.m4s'  # 下载的视频样品文件名
         self.sample_audio_name = 'sample.mp3'  # 下载的音频样品文件名
+        self.cedia_dba = CediaDBA()
 
     def download(self, keyword):
         if self.search(keyword) != 0:
@@ -136,7 +137,7 @@ class BiLiBiLi(source.Source):
         audio_download_code = self.audio_download()
         ffmpeg_merge_code = self.ffmpeg_merge()
         if video_download_code == 0 and audio_download_code == 0 and ffmpeg_merge_code == 0:
-            cedia_dba.insert(self.media_info)
+            self.cedia_dba.insert(self.media_info)
             return 0
         else:
             return -1

@@ -1,6 +1,6 @@
 /venv/
 /.idea/
 /media/
-conf.json
+config.ini
 tasks.json
 *.pyc

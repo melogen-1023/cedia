@@ -1,13 +1,15 @@
 import requests
-from core.conf.config import config
+import core.conf.config as config
+
 
 class Source:
 
     def __init__(self, **kwargs):
-        self.name = getattr(kwargs, 'name', 'source')
+        self.name = kwargs.get('name')
+        if self.name is None:
+            self.name = 'source'
         self.session = requests.Session()  # request instance in requests
-        self.path = getattr(kwargs, 'path', 'media')  # 资源存放路径
-        self.effective_path = f"{config.storage['root']}/{self.path}"
+        self.effective_path = config.config.storage['root']
         # set request headers
 
     def __str__(self):

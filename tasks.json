@@ -1,10 +1,14 @@
 {
-  "version": "0.0.1",
-  "data":
-  [
+  "data": [
     {
-      "name": "决战中途岛",
-      "sources": ["bilibili"]
+      "name": "one direction",
+      "type": "artist",
+      "sources": [
+        {
+          "name": "netease.mv",
+          "netease_id": "98351"
+        }
+      ]
     }
   ]
 }
